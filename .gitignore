@@ -1,9 +1,38 @@
+# Virtual environment
 .venv/
+#env/
+#venv/
+
+# Python cache and bite-code
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Pytest cache and reports
 .pytest_cache/
 reports/
+#*.html
+#*.xml
+#*.json
+
+# Logs
+#logs/
+#*.log
+
+# Environment files
 .env
-.idea/
+.env.*
+
+# IDE and editors
 .vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Playwright artefacts
+playwright-report/
