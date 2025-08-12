@@ -7,6 +7,9 @@ httpx>=0.24.1
 requests>=2.31.0
 python-dotenv
 pydantic
+pydantic_settings
 pytest-mock
+pyautogui
+pyyaml
 # cryptography>=41.0.0 # OPTIONAL: to store passwords in encodded files and decode them during test run
 # sqlalchemy>=2.0.19 # OPTIONAL: for the case of interaction with DB

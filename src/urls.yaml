@@ -1,0 +1,4 @@
+#base_url: "https://example.com"
+home: "/"
+login: "/login"
+profile: "/profile"
