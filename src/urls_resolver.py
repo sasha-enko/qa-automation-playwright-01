@@ -11,3 +11,6 @@ with open(src_path / 'urls.yaml', "r") as f:
 
 def get_url_for(key: str) -> str:
     return Settings().BASE_URL.rstrip("/") + project_urls[key]
+
+def get_url_ending_fragment_for(key: str) -> str:
+    return project_urls[key]

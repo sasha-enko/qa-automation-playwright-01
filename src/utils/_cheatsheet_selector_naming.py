@@ -1,58 +1,69 @@
-cheatsheet_selector_naming = {
-  "naming_conventions": {
-    "button": {
-      "pattern": "*_BUTTON",
-      "description": "Button element"
-    },
-    "input_field": {
-      "pattern": "*_INPUT or *_FIELD",
-      "description": "Input field element"
-    },
-    "link": {
-      "pattern": "*_LINK",
-      "description": "Link element"
-    },
-    "message": {
-      "pattern": "*_MESSAGE or *_ERROR",
-      "description": "Error or informational message"
-    },
-    "header_title": {
-      "pattern": "*_HEADER or *_TITLE",
-      "description": "Header or title element"
-    },
-    "copyright": {
-      "pattern": "*_COPYRIGHT",
-      "description": "Copyright text, usually in the footer"
-    },
-    "container_block": {
-      "pattern": "*_CONTAINER or *_BLOCK",
-      "description": "Container or block grouping elements"
-    },
-    "image": {
-      "pattern": "*_IMAGE",
-      "description": "Image or icon element"
-    },
-    "checkbox": {
-      "pattern": "*_CHECKBOX",
-      "description": "Checkbox input element"
-    },
-    "dropdown": {
-      "pattern": "*_DROPDOWN or *_SELECT",
-      "description": "Dropdown/select element"
-    },
-    "tab": {
-      "pattern": "*_TAB",
-      "description": "Tab element in tabbed navigation"
-    },
-    "tooltip": {
-      "pattern": "*_TOOLTIP",
-      "description": "Tooltip or hint element"
-    }
+cheatsheet_selector_naming = [
+  {
+    "action": "Button",
+    "example": "*_BUTTON",
+    "description": "Represents a button element."
   },
-  "general_guidelines": [
-    "Use uppercase letters and underscores.",
-    "Names should clearly reflect the role and type of the element.",
-    "Add context when needed (e.g., PAGE_HEADER_TITLE).",
-    "Avoid overly long names but make them informative."
-  ]
-}
+  {
+    "action": "Input Field",
+    "example": "*_INPUT or *_FIELD",
+    "description": "Represents an input field element."
+  },
+  {
+    "action": "Link",
+    "example": "*_LINK",
+    "description": "Represents a hyperlink element."
+  },
+  {
+    "action": "Message",
+    "example": "*_MESSAGE or *_ERROR",
+    "description": "Represents an error or informational message."
+  },
+  {
+    "action": "Header or Title",
+    "example": "*_HEADER or *_TITLE",
+    "description": "Represents a header or title element."
+  },
+  {
+    "action": "Copyright",
+    "example": "*_COPYRIGHT",
+    "description": "Represents copyright text, usually in the footer."
+  },
+  {
+    "action": "Container or Block",
+    "example": "*_CONTAINER or *_BLOCK",
+    "description": "Represents a container or block grouping elements."
+  },
+  {
+    "action": "Image",
+    "example": "*_IMAGE",
+    "description": "Represents an image or icon element."
+  },
+  {
+    "action": "Checkbox",
+    "example": "*_CHECKBOX",
+    "description": "Represents a checkbox input element."
+  },
+  {
+    "action": "Dropdown or Select",
+    "example": "*_DROPDOWN or *_SELECT",
+    "description": "Represents a dropdown/select element."
+  },
+  {
+    "action": "Tab",
+    "example": "*_TAB",
+    "description": "Represents a tab element in tabbed navigation."
+  },
+  {
+    "action": "Tooltip",
+    "example": "*_TOOLTIP",
+    "description": "Represents a tooltip or hint element."
+  },
+  {
+    "action": "General Guidelines",
+    "example": "N/A",
+    "description": "Use uppercase letters and underscores. Names should clearly reflect the role \
+     and type of the element. Add context when needed (e.g., PAGE_HEADER_TITLE). Avoid overly long \
+     names but make them informative."
+  }
+]

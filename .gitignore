@@ -16,13 +16,17 @@ reports/
 #*.xml
 #*.json
 
+# Screenshots and Traces
+tests/.screenshots/*.png
+tests/.traces/*.zip
+
 # Logs
 #logs/
 #*.log
 
 # Environment files
 .env
-#.env.*
+#l.env.*
 
 # IDE and editors
 .vscode/

@@ -4,25 +4,38 @@ from src.clients.api_checks import URLHealth
 
 
 class BasePage:
-    def __init__(self, page: Page, url: str):
+    def __init__(self, page: Page, url: str, unique_selector: str | None = None):
         self.page = page
         self.url = url
+        self.unique_selector = unique_selector
 
 
     def open(self):
         self.page.goto(self.url)
+        #self.page.goto(self.url, wait_until="domcontentloaded") # this waiting_until is for DOMContentLoaded without loading any resources
+
+    def screenshot(self):
+        return PageScreenshot(self.page).take_screenshot()
 
     # ----------------------------------------
 
     def _url_health_check(self) -> tuple[int, str]:
         return URLHealth(self.url).response_basics()
 
-
     def _print_url_status(self):
         print(f"\n[DEV LOG]\tURL for {self.__class__.__name__} is: {self.url}, \
         \n\t\t\tURL Health Status is: {self._url_health_check()}")
 
     # ----------------------------------------
+
+    def _is_opened(self) -> bool:
+        if not self.unique_selector:
+            raise ValueError(f"[DEV LOG]\t\"unique_selector\" is not set for the page object {self.__class__.__name__}")
+        return (
+                self.url in self.page.url
+                and
+                self._is_element_visible(self.unique_selector)
+        )
 
     def _is_element_visible(self, selector: str) -> bool:
         return self.page.is_visible(selector)
@@ -37,7 +50,5 @@ class BasePage:
         element = (self.page.locator(selector))
         element.press("Enter")
 
-# ----------------------------------------
-
-    def screenshot(self):
-        return PageScreenshot(self.page)
+    def _back(self):
+        self.page.go_back()

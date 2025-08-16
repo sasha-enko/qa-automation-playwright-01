@@ -14,8 +14,8 @@ class Settings(BaseSettings):
     HEADLESS: bool = False
 
     #TIMEOUT: int = 10
-    default_timeout: int = 10 * 1000
-    default_navigation_timeout: int = 15 * 1000
+    default_timeout: int = 15 * 1000
+    default_navigation_timeout: int = 30 * 1000
 
     _width, _height = pyautogui.size()
     VIEWPORT: Dict[str, int] = {"width": _width, "height": _height}
@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     ]
 
     ignore_https_errors: bool = True
-    trace: str ="on"
+    trace: str ="on" # can be removed because it does not exist for browser.new_context() where intended to use if pytest fixtures
     video: str = "retain-on-failure"
     screenshot: str = "only-on-failure"
 

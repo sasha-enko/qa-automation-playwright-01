@@ -1,64 +1,77 @@
-cheatsheet_css = {
-    "selectors": {
-        ".": {
-            "example": ".my-class",
-            "explanation": "Select elements with class 'my-class'"
-        },
-        "#": {
-            "example": "#my-id",
-            "explanation": "Select element with id 'my-id'"
-        },
-        "tag": {
-            "example": "div, button",
-            "explanation": "Select all elements of this tag"
-        },
-        "A B": {
-            "example": "ul li",
-            "explanation": "Select all 'li' elements inside 'ul' at any nesting level"
-        },
-        "A > B": {
-            "example": "ul > li",
-            "explanation": "Select 'li' elements direct children of 'ul'"
-        },
-        "[attr]": {
-            "example": "input[name]",
-            "explanation": "Select elements with attribute 'name' (any value)"
-        },
-        '[attr="value"]': {
-            "example": 'input[name="email"]',
-            "explanation": 'Select elements with attribute "name" equal to "email"'
-        },
-        '[attr^="val"]': {
-            "example": 'a[href^="https"]',
-            "explanation": 'Select elements whose "href" starts with "https"'
-        },
-        '[attr$="val"]': {
-            "example": 'img[src$=".png"]',
-            "explanation": 'Select elements whose "src" ends with ".png"'
-        },
-        '[attr*="val"]': {
-            "example": 'div[class*="active"]',
-            "explanation": 'Select elements whose "class" contains substring "active"'
-        },
-        ":hover": {
-            "example": "button:hover",
-            "explanation": "Select elements when mouse is hovering over them"
-        },
-        ":checked": {
-            "example": "input:checked",
-            "explanation": "Select checked checkboxes or radio buttons"
-        },
-        "text=": {
-            "example": "text=Submit",
-            "explanation": "Playwright selector: elements containing text 'Submit'"
-        },
-        "$()": {
-            "example": "page.$('div')",
-            "explanation": "Select single element matching selector (Playwright/Puppeteer)"
-        },
-        "$$()": {
-            "example": "page.$$('div')",
-            "explanation": "Select all elements matching selector (Playwright/Puppeteer)"
-        }
-    },
-}
+cheatsheet_css = [
+  {
+    "action": "Class Selector",
+    "example": ".my-class",
+    "description": "Selects elements with the class 'my-class'."
+  },
+  {
+    "action": "ID Selector",
+    "example": "#my-id",
+    "description": "Selects the element with the ID 'my-id'."
+  },
+  {
+    "action": "Tag Selector",
+    "example": "div, button",
+    "description": "Selects all elements with the given tag name(s)."
+  },
+  {
+    "action": "Descendant Selector",
+    "example": "ul li",
+    "description": "Selects all 'li' elements inside 'ul' at any nesting level."
+  },
+  {
+    "action": "Child Selector",
+    "example": "ul > li",
+    "description": "Selects 'li' elements that are direct children of 'ul'."
+  },
+  {
+    "action": "Attribute Presence Selector",
+    "example": "input[name]",
+    "description": "Selects elements with the attribute 'name' (any value)."
+  },
+  {
+    "action": "Attribute Equals Selector",
+    "example": "input[name=\"email\"]",
+    "description": "Selects elements whose 'name' attribute is exactly 'email'."
+  },
+  {
+    "action": "Attribute Starts With Selector",
+    "example": "a[href^=\"https\"]",
+    "description": "Selects elements whose 'href' attribute starts with 'https'."
+  },
+  {
+    "action": "Attribute Ends With Selector",
+    "example": "img[src$=\".png\"]",
+    "description": "Selects elements whose 'src' attribute ends with '.png'."
+  },
+  {
+    "action": "Attribute Contains Selector",
+    "example": "div[class*=\"active\"]",
+    "description": "Selects elements whose 'class' attribute contains 'active'."
+  },
+  {
+    "action": "Hover Pseudo-class",
+    "example": "button:hover",
+    "description": "Selects elements when the mouse pointer is over them."
+  },
+  {
+    "action": "Checked Pseudo-class",
+    "example": "input:checked",
+    "description": "Selects checked checkboxes or radio buttons."
+  },
+  {
+    "action": "Playwright Text Selector",
+    "example": "text=Submit",
+    "description": "Playwright-specific selector for elements containing the text 'Submit'."
+  },
+  {
+    "action": "Single Element Query",
+    "example": "page.$('div')",
+    "description": "Selects the first element matching the selector (Playwright/Puppeteer)."
+  },
+  {
+    "action": "Multiple Elements Query",
+    "example": "page.$$('div')",
+    "description": "Selects all elements matching the selector (Playwright/Puppeteer)."
+  }
+]

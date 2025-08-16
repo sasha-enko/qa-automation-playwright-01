@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import List
 from playwright.sync_api import Page
+
+from src.config import Settings
 from src.utils.project_paths import ProjectPaths
 
 

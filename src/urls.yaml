@@ -1,4 +1,13 @@
-#base_url: "https://example.com"
+#base_url: "https://demoqa.com"
+#/#google_vignette
 home: "/"
-login: "/login"
-profile: "/profile"
+elements: "/elements"
+text-box: "/text-box"
+checkbox: "/checkbox"
+radio-button: "/radio-button"
+webtables: "/webtables"
+buttons: "/buttons"
+links: "/links"
+# ===================
+#login: "/login"
+#profile: "/profile"

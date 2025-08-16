@@ -12,10 +12,16 @@ class ProjectPaths():
 
     TEST_DIR: str = BASE_DIR / 'tests'
     TEST_SS_DIR: str = TEST_DIR / '.screenshots'
+    TEST_TRACE_DIR: str = TEST_DIR / '.traces'
     TEST_API_DIR: str = TEST_DIR / 'api'
     TEST_DB_DIR: str = TEST_DIR / 'db'
     TEST_ASYNC_DIR: str = TEST_DIR / 'ui' / 'async'
     TEST_SYNC_DIR: str = TEST_DIR / 'ui' / 'sync'
+
+
+def create_dir_if_not_exist(full_dir_path: str) -> None:
+    Path(full_dir_path).mkdir(parents=True, exist_ok=True)
+
 
 print(f'ProjectPaths.py name is\t{__name__}')
 
