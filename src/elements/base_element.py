@@ -1,4 +1,6 @@
 # src/elements/base_element.py
+from xml.sax.xmlreader import Locator
+
 from playwright.sync_api import Page
 
 
@@ -10,8 +12,14 @@ class BaseElement:
 
 
     @property
-    def locator(self):
-        return self.page.locator(self.selector)
+    def locator(self) -> Locator:
+        loc = self.page.locator(self.selector)
+        if loc.count() == 0:
+            raise ValueError(
+                f"\n[DEV LOG]\tElement was not found on the page {self.page.__class__.__name__}: \
+                element type = {self.__class__.__name__} by selector = \"{self.selector}\""
+            )
+        return loc
 
 
     def _effective_timeout(self, timeout: int | None = None) -> int | None:

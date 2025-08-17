@@ -1,5 +1,7 @@
 # src/pages/base_page.py
 from playwright.sync_api import Page
+
+from src.elements.element_descriptor import Element
 from src.utils.playwright_sync_page_screenshots import PageScreenshot
 from src.clients.api_checks import URLHealth
 
@@ -9,6 +11,7 @@ class BasePage:
         self.page = page
         self.url = url
         self.unique_selector = unique_selector
+        self._validate_elements()
 
 
     def open(self):
@@ -17,6 +20,14 @@ class BasePage:
 
     def screenshot(self):
         return PageScreenshot(self.page).take_screenshot()
+
+    # ----------------------------------------
+
+    def _validate_elements(self):
+        for name, attr in self.__class__.__dict__.items(): # dictionary of page class attributes incl. class attributes, methods, descriptors
+            if isinstance(attr, Element):
+                page_element = getattr(self, name) # at this point, __get__ from Element is called because it is descriptor
+                _ = page_element.locator
 
     # ----------------------------------------
 
@@ -31,7 +42,7 @@ class BasePage:
 
     def _is_opened(self) -> bool:
         if not self.unique_selector:
-            raise ValueError(f"[DEV LOG]\t\"unique_selector\" is not set for the page object {self.__class__.__name__}")
+            raise ValueError(f"\n[DEV LOG]\t\"unique_selector\" is not set for the page object {self.__class__.__name__}")
         return (
                 self.url in self.page.url
                 and
