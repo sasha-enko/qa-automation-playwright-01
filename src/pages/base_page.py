@@ -1,3 +1,4 @@
+# src/pages/base_page.py
 from playwright.sync_api import Page
 from src.utils.playwright_sync_page_screenshots import PageScreenshot
 from src.clients.api_checks import URLHealth
