@@ -88,7 +88,7 @@ def sync_browser(sync_playwright_instance: SyncPlaywright, config_settings, brow
     browser.close()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def sync_context(sync_browser: SyncBrowser, browser_context_args) -> Generator[SyncBrowserContext, Any, None]:
     context = sync_browser.new_context(**browser_context_args)
 
@@ -96,7 +96,7 @@ def sync_context(sync_browser: SyncBrowser, browser_context_args) -> Generator[S
     context.close()
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def sync_context_with_trace(sync_context: SyncBrowserContext, trace_path_name: str, config_settings: Settings) -> Generator[SyncBrowserContext, Any, None]:
     """
     Fixture for a context with conditional tracing.
@@ -112,7 +112,7 @@ def sync_context_with_trace(sync_context: SyncBrowserContext, trace_path_name: s
         sync_context.tracing.stop(path=trace_path_name)
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def sync_page(sync_context_with_trace: SyncBrowserContext) -> Generator[SyncPage, Any, None]:
     page = sync_context_with_trace.new_page()
     apply_default_timeouts_to_sync(page)
@@ -144,7 +144,7 @@ async def async_browser(async_playwright_instance: AsyncPlaywright, config_setti
     await browser.close()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 async def async_context(async_browser: AsyncBrowser, browser_context_args) -> AsyncGenerator[AsyncBrowserContext, Any]:
     context = await async_browser.new_context(**browser_context_args)
 
@@ -152,7 +152,7 @@ async def async_context(async_browser: AsyncBrowser, browser_context_args) -> As
     await context.close()
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 async def async_context_with_trace(async_context: AsyncBrowserContext, trace_path_name: str, config_settings: Settings) -> AsyncGenerator[AsyncBrowserContext, Any]:
     """
     Fixture for a context with conditional tracing.
@@ -168,7 +168,7 @@ async def async_context_with_trace(async_context: AsyncBrowserContext, trace_pat
         await async_context.tracing.stop(path=trace_path_name)
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 async def async_page(async_context_with_trace: AsyncBrowserContext) -> AsyncGenerator[AsyncPage, Any]:
     page = await async_context_with_trace.new_page()
     await apply_default_timeouts_to_async(page)

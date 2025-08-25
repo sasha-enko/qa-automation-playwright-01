@@ -24,6 +24,9 @@ tests/.traces/*.zip
 #logs/
 #*.log
 
+# Tests' storage states
+storage_states/
+
 # Environment files
 .env
 #l.env.*
