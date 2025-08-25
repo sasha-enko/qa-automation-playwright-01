@@ -7,10 +7,10 @@ from src.clients.api_checks import URLHealth
 
 
 class BasePage:
-    def __init__(self, page: Page, url: str, unique_selector: str | None = None):
+    def __init__(self, page: Page, url: str, unique_page_definer: str | None = None):
         self.page = page
         self.url = url
-        self.unique_selector = unique_selector
+        self.unique_page_definer = unique_page_definer
         self._validate_elements()
 
 
@@ -40,23 +40,18 @@ class BasePage:
 
     # ----------------------------------------
 
-    def _is_opened(self) -> bool:
-        if not self.unique_selector:
-            raise ValueError(f"\n[DEV LOG]\t\"unique_selector\" is not set for the page object {self.__class__.__name__}")
-        return (
-                self.url in self.page.url
-                and
-                self._is_element_visible(self.unique_selector)
-        )
-
     def _is_element_visible(self, selector: str) -> bool:
         return self.page.is_visible(selector)
 
-    def _click(self, selector: str):
-        self.page.click(selector)
+    def _is_opened(self) -> bool:
+        if not self.unique_page_definer:
+            raise ValueError(f"\n[DEV LOG]\t\"unique_page_definer\" is not set for the page object {self.__class__.__name__}")
+        return (
+                self.url in self.page.url
+                and
+                self._is_element_visible(self.unique_page_definer)
+        )
 
-    def _fill(self, selector: str, text: str):
-        self.page.fill(selector, text)
 
     def _press_enter(self, selector: str):
         element = (self.page.locator(selector))
@@ -64,3 +59,13 @@ class BasePage:
 
     def _back(self):
         self.page.go_back()
+
+
+# ======================================================================================
+# Redundant function because are implemented in every element type as individual actions
+
+    def _click(self, selector: str):
+        self.page.click(selector)
+
+    def _fill(self, selector: str, text: str):
+        self.page.fill(selector, text)

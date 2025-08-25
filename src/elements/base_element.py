@@ -1,7 +1,8 @@
 # src/elements/base_element.py
 from xml.sax.xmlreader import Locator
-
 from playwright.sync_api import Page
+
+from element_enums import ElementState
 
 
 class BaseElement:
@@ -32,9 +33,15 @@ class BaseElement:
         return self.locator.is_visible(timeout=t)
 
 
-    def wait_for(self, timeout: int | None = None):
+    def wait_in_dom_until(self, attached: bool = True, timeout: int | None = None):
         t = self._effective_timeout(timeout)
-        return self.locator.wait_for(timeout=t)
+        state = ElementState.ATTACHED if attached else ElementState.DETACHED
+        return self.locator.wait_for(state=state.value, timeout=t)
+
+    def wait_on_page_until(self, visible: bool = True, timeout: int | None = None):
+        t = self._effective_timeout(timeout)
+        state = ElementState.VISIBLE if visible else ElementState.HIDDEN
+        return self.locator.wait_for(state=state.value, timeout=t)
 
 
     def get_text(self, timeout: int | None = None) -> str:
