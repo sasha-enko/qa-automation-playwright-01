@@ -1,5 +1,5 @@
 # src/elements/base_element.py
-from xml.sax.xmlreader import Locator
+from playwright.sync_api import Locator
 from playwright.sync_api import Page
 
 from element_enums import ElementState
@@ -47,3 +47,9 @@ class BaseElement:
     def get_text(self, timeout: int | None = None) -> str:
         t = self._effective_timeout(timeout)
         return self.locator.inner_text(timeout=t)
+
+
+    def hover(self, timeout: int | None = None):
+        t = self._effective_timeout(timeout)
+        if self.is_visible(timeout=t):
+            self.locator.hover(timeout=t)
