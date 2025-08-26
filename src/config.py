@@ -30,6 +30,8 @@ class Settings(BaseSettings):
     video: str = "retain-on-failure"
     screenshot: str = "only-on-failure"
 
+    session_reuse: str = "off"
+
 
     class Config:
         env_file = str(ProjectPaths().BASE_DIR / ".env")

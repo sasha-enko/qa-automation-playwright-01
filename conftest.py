@@ -1,7 +1,9 @@
 import re
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, Any, Generator, AsyncGenerator
 import pytest
+import getpass
 
 from playwright.async_api import (
     Playwright as AsyncPlaywright,
@@ -20,14 +22,27 @@ from playwright.sync_api import (
 
 from src.config import Settings
 from src.utils.project_paths import ProjectPaths, create_dir_if_not_exist
+from src.utils.storage_state_args import StateArgs
 from src.utils.helpers import (
     apply_default_timeouts_to_async,
     apply_default_timeouts_to_sync,
     reject_cookies_if_present_on_async,
     reject_cookies_if_present_on_sync,
 )
+from src.urls_resolver import get_url_for
+from src.credentials_resolver import users, creds_for_user
+
 
 # =========================================================================
+
+def pytest_addoption(parser):
+    parser.addoption("--user", action="store", default=None, help="This the nickname of the user")
+
+
+@pytest.fixture(scope="session")
+def user_nickname_from_cli(request) -> str:
+    return str(request.config.getoption("--user"))
+
 
 @pytest.fixture(scope="session")
 def config_settings() -> Settings:
@@ -67,6 +82,38 @@ def trace_path_name(request) -> str:
     return f"{ProjectPaths.TEST_TRACE_DIR}/trace_{safe_test_name}_{timestamp}.zip"
 
 
+@pytest.fixture(scope="session")
+def state_args(user_nickname_from_cli: str | None = None) -> StateArgs:
+
+    if user_nickname_from_cli:
+        # gets credentials per the nickname, but before it checks its presence in 'credentials.yaml'
+        username, _ = creds_for_user(user_nickname_from_cli)
+        safe_usr = re.sub(r'[^a-zA-Z0-9_-]', '_', username)
+    else:
+        # If the key is not passed, we take the system user
+        system_user = getpass.getuser()
+        safe_usr = re.sub(r'[^a-zA-Z0-9_-]', '_', system_user)
+
+    state_file = Path(f"{ProjectPaths.STORAGE_STATES_DIR}/auth_{safe_usr}.json")
+
+    return StateArgs(storage_state=state_file, file_exists=state_file.exists())
+
+
+@pytest.fixture(scope="session")
+def authorization(page: SyncPage):
+    login_url = get_url_for('login')
+    usr_selector = ""
+    pwd_selector = ""
+    submit_btn = ""
+    usr_name = ""
+    pwd_value = ""
+
+    page.goto(login_url)
+    page.fill(usr_selector, usr_name)
+    page.fill(pwd_selector, pwd_value)
+    page.click(submit_btn)
+
+
 # =========================================================================
 # Sync Functions
 # =========================================================================
@@ -80,7 +127,7 @@ def sync_playwright_instance() -> Generator[SyncPlaywright, Any, None]:
 
 
 @pytest.fixture(scope="session")
-def sync_browser(sync_playwright_instance: SyncPlaywright, config_settings, browser_args) -> Generator[SyncBrowser, Any, None]:
+def sync_browser(sync_playwright_instance: SyncPlaywright, config_settings, browser_args: dict) -> Generator[SyncBrowser, Any, None]:
     browser_type = getattr(sync_playwright_instance, config_settings.BROWSER)
     browser = browser_type.launch(**browser_args)
 
@@ -89,10 +136,19 @@ def sync_browser(sync_playwright_instance: SyncPlaywright, config_settings, brow
 
 
 @pytest.fixture(scope="function")
-def sync_context(sync_browser: SyncBrowser, browser_context_args) -> Generator[SyncBrowserContext, Any, None]:
-    context = sync_browser.new_context(**browser_context_args)
+def sync_context(sync_browser: SyncBrowser, browser_context_args: dict, state_args: StateArgs, config_settings: Settings) -> Generator[SyncBrowserContext, Any, None]:
+    session_reuse_enabled = config_settings.session_reuse.lower() == "on"
+
+    context_args = {**browser_context_args}
+    if session_reuse_enabled:
+        context_args.update(state_args.as_kwargs()) # add {"storage_state": file_path} if the file already exists
+
+    context = sync_browser.new_context(**context_args)
 
     yield context
+
+    if session_reuse_enabled:
+        context.storage_state(path=str(state_args.storage_state))   # set path= to the state_file as str (note: initially returned as Path)
     context.close()
 
 
