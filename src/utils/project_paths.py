@@ -6,11 +6,16 @@ class ProjectPaths():
     BASE_DIR = Path(__file__).resolve().parents[2]
 
     SRC_DIR: str = BASE_DIR / 'src'
+
     CLIENTS_DIR: str = SRC_DIR / 'clients'
     DB_DIR: str = SRC_DIR / 'db'
+    ELEMENTS_DIR: str = SRC_DIR / 'elements'
     PAGES_DIR: str = SRC_DIR / 'pages'
+    UTILS__DIR: str = SRC_DIR / 'utils'
 
+    STORAGE_STATES_DIR: str = BASE_DIR / 'storage_states'
     TEST_DIR: str = BASE_DIR / 'tests'
+
     TEST_SS_DIR: str = TEST_DIR / '.screenshots'
     TEST_TRACE_DIR: str = TEST_DIR / '.traces'
     TEST_API_DIR: str = TEST_DIR / 'api'
