@@ -2,8 +2,9 @@
 from playwright.sync_api import Locator
 from playwright.sync_api import Page
 
-from element_enums import ElementState
+from src.elements.element_enums import ElementState
 from src.elements.element_decorators import with_timeout
+
 
 
 class BaseElement:

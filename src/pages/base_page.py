@@ -6,7 +6,11 @@ from src.utils.playwright_sync_page_screenshots import PageScreenshot
 from src.clients.api_checks import URLHealth
 
 
+
 class BasePage:
+
+# ==========   INIT   =========================================
+
     def __init__(self, page: Page, url: str, unique_page_definer: str | None = None):
         self.page = page
         self.url = url
@@ -14,22 +18,28 @@ class BasePage:
         self._validate_elements()
 
 
+# ==========   PAGE ACTIONS   =========================================
+
     def open(self):
         self.page.goto(self.url)
         #self.page.goto(self.url, wait_until="domcontentloaded") # this waiting_until is for DOMContentLoaded without loading any resources
 
+    def back(self):
+        self.page.go_back()
+
     def screenshot(self):
         return PageScreenshot(self.page).take_screenshot()
 
-    # ----------------------------------------
+# ==========   PAGE CONTENT VALIDATION   =========================================
 
+    # this method uses descriptor Element, which I decided to postpone
     def _validate_elements(self):
         for name, attr in self.__class__.__dict__.items(): # dictionary of page class attributes incl. class attributes, methods, descriptors
             if isinstance(attr, Element):
                 page_element = getattr(self, name) # at this point, __get__ from Element is called because it is descriptor
                 _ = page_element.locator
 
-    # ----------------------------------------
+# ==========   PAGE URL CHECKS   =========================================
 
     def _url_health_check(self) -> tuple[int, str]:
         return URLHealth(self.url).response_basics()
@@ -38,7 +48,7 @@ class BasePage:
         print(f"\n[DEV LOG]\tURL for {self.__class__.__name__} is: {self.url}, \
         \n\t\t\tURL Health Status is: {self._url_health_check()}")
 
-    # ----------------------------------------
+# ==========   ADDITIONAL CHECKS   =========================================
 
     def _is_element_visible(self, selector: str) -> bool:
         return self.page.is_visible(selector)
@@ -51,14 +61,6 @@ class BasePage:
                 and
                 self._is_element_visible(self.unique_page_definer)
         )
-
-
-    def _press_enter(self, selector: str):
-        element = (self.page.locator(selector))
-        element.press("Enter")
-
-    def _back(self):
-        self.page.go_back()
 
 
 # ======================================================================================
