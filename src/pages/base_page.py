@@ -1,4 +1,6 @@
 # src/pages/base_page.py
+from typing import Literal
+
 from playwright.sync_api import Page
 
 from src.elements.element_descriptor import Element
@@ -27,8 +29,38 @@ class BasePage:
     def back(self):
         self.page.go_back()
 
+    def refresh(self, wait_until: Literal["load", "domcontentloaded", "networkidle"] = "load", retries: int = 1):
+        """
+        Literal allows the following wait_until options:
+        "load" - Waits for the 'load' event. All resources including HTML, CSS, JS, images, fonts, and iframes are fully loaded.
+             Use this when you need the page completely rendered and stable. Slower on heavy pages.
+        "domcontentloaded" - Waits for the 'DOMContentLoaded' event. Only HTML and DOM are ready. Faster than "load".
+             Images, styles, fonts, and AJAX requests may still be loading. Use this when working with DOM elements is sufficient.
+        "networkidle" - Waits until there are no network requests (XHR/fetch, CSS, JS, fonts, images/video/audio, iframe requests, WebSocket)
+             for a short period (~500 ms). Useful for dynamic pages SPAs (e.g. via AJAX). Can timeout if the page continuously makes network requests.
+        """
+        attempt = 0
+        while attempt <= retries:
+            try:
+                self.page.reload(wait_until=wait_until)
+                if self.unique_page_definer:
+                    self.page.wait_for_selector(self.unique_page_definer)
+                return
+            except Exception as e:
+                attempt += 1
+                if attempt > retries:
+                    raise RuntimeError(
+                        f"\n[DEV LOG]\t\
+                        Page {self.__class__.__name__} refresh failed after {retries} retries with exception: \n{e}"
+                    ) from e    # this line show that the original cause of the RuntimeError is the TimeoutError
+                print(
+                    f"\n[DEV LOG]\t\
+                    Warning: refresh attempt {attempt} of th page {self.__class__.__name__} is failed, retrying..."
+                )
+
     def screenshot(self):
         return PageScreenshot(self.page).take_screenshot()
+
 
 # ==========   PAGE CONTENT VALIDATION   =========================================
 
@@ -39,6 +71,7 @@ class BasePage:
                 page_element = getattr(self, name) # at this point, __get__ from Element is called because it is descriptor
                 _ = page_element.locator
 
+
 # ==========   PAGE URL CHECKS   =========================================
 
     def _url_health_check(self) -> tuple[int, str]:
@@ -48,6 +81,7 @@ class BasePage:
         print(f"\n[DEV LOG]\tURL for {self.__class__.__name__} is: {self.url}, \
         \n\t\t\tURL Health Status is: {self._url_health_check()}")
 
+
 # ==========   ADDITIONAL CHECKS   =========================================
 
     def _is_element_visible(self, selector: str) -> bool:
@@ -55,7 +89,10 @@ class BasePage:
 
     def _is_opened(self) -> bool:
         if not self.unique_page_definer:
-            raise ValueError(f"\n[DEV LOG]\t\"unique_page_definer\" is not set for the page object {self.__class__.__name__}")
+            raise ValueError(
+                f"\n[DEV LOG]\t\
+                \"unique_page_definer\" is not set for the page object {self.__class__.__name__}"
+            )
         return (
                 self.url in self.page.url
                 and

@@ -19,7 +19,8 @@ class BaseElement:
         loc = self.page.locator(self.selector)
         if loc.count() == 0:
             raise ValueError(
-                f"\n[DEV LOG]\tElement was not found on the page {self.page.__class__.__name__}: \
+                f"\n[DEV LOG]\t\
+                Element was not found on the page {self.page.__class__.__name__}: \
                 element type = {self.__class__.__name__} by selector = \"{self.selector}\""
             )
         return loc
@@ -56,8 +57,8 @@ class BaseElement:
     def hover(self, *, timeout: int | None = None):
         if not self.is_visible(timeout=timeout):
             raise TimeoutError(
-                f"\n[DEV LOG]\tAfter {timeout} ms\
-                \n\t\t\tElement is not visible on the page {self.page.__class__.__name__}: \
+                f"\n[DEV LOG]\t\
+                After {timeout} ms\n\t\t\tElement is not visible on the page {self.page.__class__.__name__}: \
                 element type = {self.__class__.__name__} by selector = \"{self.selector}\""
             )
         self.locator.hover(timeout=timeout)
