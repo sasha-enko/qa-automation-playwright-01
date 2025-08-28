@@ -1,6 +1,6 @@
 # src/elements/button.py
 from src.elements.base_element import BaseElement
-from src.elements.element_decorators import with_timeout
+from src.decorators.waits import with_timeout
 
 
 

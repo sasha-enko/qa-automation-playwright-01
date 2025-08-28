@@ -3,7 +3,7 @@ from playwright.sync_api import Locator
 from playwright.sync_api import Page
 
 from src.elements.element_enums import ElementState
-from src.elements.element_decorators import with_timeout
+from src.decorators.waits import with_timeout
 
 
 

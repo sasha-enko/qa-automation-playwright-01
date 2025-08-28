@@ -1,4 +1,4 @@
-# src/elements/element_decorators.py
+# src/elements/waits.py
 from functools import wraps
 
 
