@@ -5,6 +5,10 @@ from pathlib import Path
 class ProjectPaths():
     BASE_DIR = Path(__file__).resolve().parents[2]
 
+    REPORTS_DIR: str = BASE_DIR / 'reports'
+    ALLURE_REPORTS_DIR: str = REPORTS_DIR / 'allure'
+
+    SCRIPTS_DIR: str = BASE_DIR / 'scripts'
     SRC_DIR: str = BASE_DIR / 'src'
 
     CLIENTS_DIR: str = SRC_DIR / 'clients'

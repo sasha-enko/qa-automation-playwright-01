@@ -35,6 +35,21 @@ from src.credentials_resolver import users, creds_for_user
 
 # =========================================================================
 
+ALLURE_DIR = str(ProjectPaths.ALLURE_REPORTS_DIR)
+create_dir_if_not_exist(ALLURE_DIR)
+
+# =========================================================================
+
+def pytest_configure(config):
+    # Check if the --alluredir option (Allure results directory) was set via CLI.
+    # If not set, assign a default value (ALLURE_DIR)
+    # Example of the command: pytest -s --alluredir=reports/allure tests/ui/sync/test_home_page.py::test_home_page_logo
+    #
+    if not getattr(config.option, "alluredir", None):
+        config.option.alluredir = str(ALLURE_DIR)
+
+# ---------------------------------
+
 def pytest_addoption(parser):
     parser.addoption("--user", action="store", default=None, help="This the nickname of the user")
 
@@ -43,11 +58,13 @@ def pytest_addoption(parser):
 def user_nickname_from_cli(request) -> str:
     return str(request.config.getoption("--user"))
 
+# ---------------------------------
 
 @pytest.fixture(scope="session")
 def config_settings() -> Settings:
     return Settings()
 
+# ---------------------------------
 
 @pytest.fixture(scope="session")
 def browser_args(config_settings) -> Dict[str, Any]:
@@ -66,18 +83,19 @@ def browser_context_args(config_settings) -> Dict[str, Any]:
         #"trace": config_settings.trace,
     }
 
+# ---------------------------------
 
 @pytest.fixture
 def trace_path_name(request) -> str:
     create_dir_if_not_exist(ProjectPaths.TEST_TRACE_DIR)
 
     test_name = request.node.name   # "request" is the pytest fixture, node.name provides the test name
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     safe_test_name = re.sub(r'[^a-zA-Z0-9_-]', '_', test_name)
     # Why? Pytest test names can contain spaces, brackets, or other characters
     # that are unsafe for filenames. We replace them with underscores.
     # The regex replaces any character that is not a-z, A-Z, 0-9, underscore, or dash with an underscore.
-
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     return f"{ProjectPaths.TEST_TRACE_DIR}/trace_{safe_test_name}_{timestamp}.zip"
 

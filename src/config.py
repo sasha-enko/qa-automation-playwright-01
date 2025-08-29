@@ -1,7 +1,7 @@
 # src/config.py
 import pyautogui
 from typing import Dict, List
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.utils.project_paths import ProjectPaths
 
@@ -33,8 +33,9 @@ class Settings(BaseSettings):
     session_reuse: str = "off"
 
 
-    class Config:
+    model_config = SettingsConfigDict(
         env_file = str(ProjectPaths().BASE_DIR / ".env")
+    )
 
 
 # Usage:

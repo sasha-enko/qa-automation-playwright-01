@@ -1,15 +1,17 @@
 pytest>=7.0
 pytest-asyncio>=0.21.0
 pytest-xdist>=2.6.0
-pytest-html>=4.1.1
+#pytest-html>=4.1.1
+allure-pytest>=2.15.0
+allure-python-commons~=2.15.0
 playwright>=1.36.0
 httpx>=0.24.1
 requests>=2.31.0
-python-dotenv
-pydantic
-pydantic_settings
+python-dotenv~=1.1.1
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
 pytest-mock
-pyautogui
-pyyaml
+pyautogui~=0.9.54
+pyyaml~=6.0.2
 # cryptography>=41.0.0 # OPTIONAL: to store passwords in encodded files and decode them during test run
 # sqlalchemy>=2.0.19 # OPTIONAL: for the case of interaction with DB
