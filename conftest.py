@@ -30,25 +30,11 @@ from src.utils.helpers import (
     reject_cookies_if_present_on_sync,
 )
 from src.urls_resolver import get_url_for
-from src.credentials_resolver import users, creds_for_user
+from src.credentials_resolver import creds_for_user
 
 
-# =========================================================================
-
-ALLURE_DIR = str(ProjectPaths.ALLURE_REPORTS_DIR)
-create_dir_if_not_exist(ALLURE_DIR)
 
 # =========================================================================
-
-def pytest_configure(config):
-    # Check if the --alluredir option (Allure results directory) was set via CLI.
-    # If not set, assign a default value (ALLURE_DIR)
-    # Example of the command: pytest -s --alluredir=reports/allure tests/ui/sync/test_home_page.py::test_home_page_logo
-    #
-    if not getattr(config.option, "alluredir", None):
-        config.option.alluredir = str(ALLURE_DIR)
-
-# ---------------------------------
 
 def pytest_addoption(parser):
     parser.addoption("--user", action="store", default=None, help="This the nickname of the user")

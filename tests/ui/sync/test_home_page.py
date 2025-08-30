@@ -20,22 +20,28 @@ def test_home_page_logo(sync_page):
         page.screenshot()
 
 
+@allure.feature("Demo Feature")
+@allure.story("Demo Story")
 @pytest.mark.ui
 @pytest.mark.ui_sync
 def test_home_page_(sync_page):
-    page = HomePageSync(sync_page)
-    page.open()
-    assert page._is_opened()
+    with allure.step("OK: generate page"):
+        page = HomePageSync(sync_page)
+    with allure.step("OK: open Home page"):
+        page.open()
+        assert page._is_opened()
 
-    for card in page.panels.values():
-        card.hover()
-        card.click()
-        page.screenshot()
-        page.back()
+    with allure.step("OK: open cards and taking screenshots"):
+        for card in page.panels.values():
+            card.hover()
+            card.click()
+            page.screenshot()
+            page.back()
 
-    forms_panel = page.panels[Panel.FORMS]
-    assert forms_panel.is_visible()
-    expect(forms_panel.locator).not_to_be_hidden()
+    with allure.step("OK: checking panel FORMS"):
+        forms_panel = page.panels[Panel.FORMS]
+        assert forms_panel.is_visible()
+        expect(forms_panel.locator).not_to_be_hidden()
 
-    assert page.has_logo()
+        assert page.has_logo()
 
